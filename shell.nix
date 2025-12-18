@@ -27,6 +27,7 @@ let
             nodejs_20
             pkg-config
             zlib
+            git
             # For stripping binaries for release
             patchelf
           ])
@@ -46,9 +47,14 @@ let
         shellHook =
           ''
             cat <<EOF > nix.gni
+            # Basic toolchain settings for GN
             is_clang=true
             use_lld=false
             clang_use_chrome_plugins=false
+
+            # Enable proprietary codecs (e.g. H.264) in libwebrtc
+            proprietary_codecs=true
+            rtc_use_h264=true
           ''
           + (lib.optionalString is-darwin ''
             clang_base_path="${clang}"
