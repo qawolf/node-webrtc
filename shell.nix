@@ -52,7 +52,6 @@ let
             clang_use_chrome_plugins=false
             proprietary_codecs=true
             rtc_use_h264=true
-            ffmpeg_branding="Chrome"
           ''
           + (lib.optionalString is-darwin ''
             clang_base_path="${clang}"

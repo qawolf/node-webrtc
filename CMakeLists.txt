@@ -161,7 +161,6 @@ list(APPEND GN_GEN_ARGS
   rtc_include_pulse_audio=false
   rtc_include_tests=false
   use_lld=false
-  rtc_use_h264=true
   "target_cpu=\"$ENV{TARGET_ARCH}\""
   "${NIX_GN_GEN_ARGS}"
 )
