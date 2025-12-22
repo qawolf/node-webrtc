@@ -81,48 +81,51 @@ This fork (`@qawolf/wrtc`) includes custom scripts to facilitate building for Li
 
 Ensure you are authenticated with the GitHub Package Registry. Your `~/.npmrc` should be configured with your PAT, or you can use the project-level `.npmrc` provided.
 
-### 1. Build Linux x64 Artifact (Production)
+### 1. Build Linux Artifacts (x64 and arm64)
 
-To build the Linux x64 binary (used in GKE/Production), use the provided Docker script. This handles cross-compilation quirks and patches the binary for portability.
+To build the Linux binaries (used in production environments), use the provided Docker scripts. These handle cross-compilation quirks and patch the binaries for portability.
+
+**Parallel Build (Recommended):**
+Builds both x64 and arm64 binaries in parallel.
 
 ```bash
-# Builds the artifact using Docker and places it in prebuilds/linux-x64/
+./scripts/build-parallel-docker.sh
+```
+
+**Single Architecture Build:**
+You can also build for a specific architecture by setting `TARGET_ARCH` (defaults to x64).
+
+```bash
+# Build for x64
 ./scripts/build-incremental-docker.sh
+
+# Build for arm64
+TARGET_ARCH=arm64 ./scripts/build-incremental-docker.sh
 ```
 
-### 2. Build macOS Artifact (Local Development)
+Artifacts will be placed in `prebuilds/linux-x64/` and `prebuilds/linux-arm64/`.
 
-To build the binary for your local macOS machine (e.g., Apple Silicon):
-
-```bash
-# Installs deps and builds from source
-npm install
-npm run make-prebuilt
-```
-
-_Note: This places the artifact in `prebuilds/darwin-arm64/` (or `darwin-x64` depending on your arch)._
-
-### 3. Publishing
+### 2. Publishing
 
 Publishing must be done in a specific order: first the platform-specific binaries, then the main package.
 
-**Step A: Publish Linux x64**
+**Step A: Publish Platform Binaries**
+
+Navigate to each built platform folder in `prebuilds/` and publish them.
 
 ```bash
+# Example for Linux x64
 cd prebuilds/linux-x64
 npm publish
 cd ../..
-```
 
-**Step B: Publish macOS (Optional but recommended for devs)**
-
-```bash
-cd prebuilds/darwin-arm64
+# Example for Linux arm64
+cd prebuilds/linux-arm64
 npm publish
 cd ../..
 ```
 
-**Step C: Publish Main Package**
+**Step B: Publish Main Package**
 Once the platform binaries are published, publish the root package. It references the others as `optionalDependencies`.
 
 ```bash
