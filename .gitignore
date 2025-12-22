@@ -11,7 +11,7 @@
 .vim
 .vs
 build
-build-*
+/build-*
 compile_commands.json
 example
 gcc-arm-*
