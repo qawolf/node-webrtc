@@ -1,5 +1,5 @@
 {
-  "name": "@roamhq/wrtc",
+  "name": "@qawolf/wrtc",
   "description": "Standards-compliant WebRTC implementation for Node",
   "keywords": [
     "webrtc",
@@ -13,7 +13,7 @@
   "license": "BSD-2-Clause",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/WonderInventions/node-webrtc.git"
+    "url": "git+https://github.com/qawolf/node-webrtc.git"
   },
   "main": "lib/index.js",
   "types": "types/index.d.ts",
@@ -25,11 +25,11 @@
     "types"
   ],
   "optionalDependencies": {
-    "@roamhq/wrtc-darwin-arm64": "0.9.1",
-    "@roamhq/wrtc-darwin-x64": "0.9.1",
-    "@roamhq/wrtc-linux-arm64": "0.9.1",
-    "@roamhq/wrtc-linux-x64": "0.9.1",
-    "@roamhq/wrtc-win32-x64": "0.9.1",
+    "@qawolf/wrtc-darwin-arm64": "0.9.1",
+    "@qawolf/wrtc-darwin-x64": "0.9.1",
+    "@qawolf/wrtc-linux-arm64": "0.9.1",
+    "@qawolf/wrtc-linux-x64": "0.9.1",
+    "@qawolf/wrtc-win32-x64": "0.9.1",
     "domexception": "^4.0.0"
   },
   "devDependencies": {

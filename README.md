@@ -3,7 +3,7 @@
   <img height="120px" src="https://webrtc.github.io/webrtc-org/assets/images/webrtc-logo-vert-retro-dist.svg">
 </h1>
 
-[![NPM](https://img.shields.io/npm/v/@roamhq/wrtc.svg)](https://www.npmjs.com/package/@roamhq/wrtc)
+[![NPM](https://img.shields.io/npm/v/@qawolf/wrtc.svg)](https://www.npmjs.com/package/@qawolf/wrtc)
 
 node-webrtc is a Node.js Native Addon that provides bindings to [WebRTC
 M98](https://webrtc.googlesource.com/src/+/branch-heads/4758). This project is
@@ -15,7 +15,7 @@ included.
 ## Install
 
 ```
-npm install @roamhq/wrtc
+npm install @qawolf/wrtc
 ```
 
 Installing from NPM downloads a prebuilt binary for your operating system ×
@@ -72,3 +72,59 @@ still be able to [build from source](docs/build-from-source.md).
 ## Examples
 
 See [node-webrtc/node-webrtc-examples](https://github.com/node-webrtc/node-webrtc-examples).
+
+## Maintainer Guide: Building & Publishing
+
+This fork (`@qawolf/wrtc`) includes custom scripts to facilitate building for Linux (via Docker) and macOS.
+
+### Prerequisites
+
+Ensure you are authenticated with the GitHub Package Registry. Your `~/.npmrc` should be configured with your PAT, or you can use the project-level `.npmrc` provided.
+
+### 1. Build Linux x64 Artifact (Production)
+
+To build the Linux x64 binary (used in GKE/Production), use the provided Docker script. This handles cross-compilation quirks and patches the binary for portability.
+
+```bash
+# Builds the artifact using Docker and places it in prebuilds/linux-x64/
+./scripts/build-incremental-docker.sh
+```
+
+### 2. Build macOS Artifact (Local Development)
+
+To build the binary for your local macOS machine (e.g., Apple Silicon):
+
+```bash
+# Installs deps and builds from source
+npm install
+npm run make-prebuilt
+```
+
+_Note: This places the artifact in `prebuilds/darwin-arm64/` (or `darwin-x64` depending on your arch)._
+
+### 3. Publishing
+
+Publishing must be done in a specific order: first the platform-specific binaries, then the main package.
+
+**Step A: Publish Linux x64**
+
+```bash
+cd prebuilds/linux-x64
+npm publish
+cd ../..
+```
+
+**Step B: Publish macOS (Optional but recommended for devs)**
+
+```bash
+cd prebuilds/darwin-arm64
+npm publish
+cd ../..
+```
+
+**Step C: Publish Main Package**
+Once the platform binaries are published, publish the root package. It references the others as `optionalDependencies`.
+
+```bash
+npm publish
+```
